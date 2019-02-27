@@ -1,13 +1,10 @@
 package main
 
-
-import(
-
+import (
 	"fmt"
-
 )
 
-func main() {	
-	sd:=1
-	fmt.Println("123",sd)
+func main() {
+	sd := 1
+	fmt.Println("123", sd)
 }
