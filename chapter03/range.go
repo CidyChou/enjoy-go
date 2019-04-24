@@ -18,6 +18,8 @@ func main() {
 	kvs := map[string]string{"a": "apple", "b": "banana"}
 	for k, v := range kvs {
 		fmt.Println("%s -> %s\n", k, v)
+		fmt.Println("sd")
+
 	}
 
 }

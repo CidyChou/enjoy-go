@@ -15,7 +15,9 @@ func main() {
 	fmt.Println("排序后:", numArr)
 
 	//utlis.Fibonacci(10)
-	fmt.Println("青蛙跳到4级有:", utlis.Fibonacci(30), "种跳法")
+	fmt.Println("青蛙跳到4级有:", utlis.Fibonacci(50), "种跳法")
+
+	fmt.Println("test")
 
 }
 
