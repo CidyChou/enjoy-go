@@ -10,6 +10,7 @@ func climbStairs(n int) int {
 
 	res := []int{0, 1, 2}
 
+	// 动态规划
 	for i := 3; i <= n; i++ {
 		res = append(res, res[i-1]+res[i-2])
 	}
