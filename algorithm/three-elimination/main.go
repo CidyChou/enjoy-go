@@ -16,6 +16,7 @@ type point struct {
 
 var chessboard [][]string
 var element []string
+var score int
 
 func init() {
 	chessboard = [][]string{
@@ -29,22 +30,26 @@ func init() {
 		{"X", "X", "X", "X", "X", "X", "X", "X"},
 	}
 
-	element = []string{"✭", "☄", "✹", "✪", "✢"}
+	//element = []string{"☄", "✹", "✪", "✢", "✭"}
+	element = []string{"H", "%", "&", "Q", "M"}
 
 	initChessboard(chessboard)
 
+	fmt.Println("--------------------游戏开始-------------------")
+	fmt.Println()
+	fmt.Println()
 	for c := range chessboard {
-		fmt.Println(chessboard[c])
+		fmt.Println("         ", chessboard[c])
 	}
+	fmt.Println()
 }
 
 func main() {
+	onTrigger()
+
 	for {
-
-		onTrigger()
-
 		var p1, p2 string
-		fmt.Println("请输入要移动的棋子的位置 与 移动后的位置:")
+		fmt.Println("请输入要移动的棋子的位置 与 移动后的位置: eg:(1,1 1,2)")
 		fmt.Scanln(&p1, &p2)
 
 		X1, _ := strconv.ParseFloat(strings.Split(p1, ",")[0], 64)
@@ -56,51 +61,72 @@ func main() {
 		if math.Abs(X2-X1) > 1 || math.Abs(Y2-Y1) > 1 {
 			fmt.Println("请输入正确的位置")
 		} else {
+			mdScore := score
 			chessboard[int(X1)][int(Y1)], chessboard[int(X2)][int(Y2)] = chessboard[int(X2)][int(Y2)], chessboard[int(X1)][int(Y1)]
-			for c := range chessboard {
-				fmt.Println(chessboard[c])
+
+			onTrigger()
+
+			if mdScore == score {
+				fmt.Println("无消除")
+				chessboard[int(X2)][int(Y2)], chessboard[int(X1)][int(Y1)] = chessboard[int(X1)][int(Y1)], chessboard[int(X2)][int(Y2)]
 			}
+
+			// fmt.Println("--------------------移动后-------------------")
+			// fmt.Println()
+
+			// for c := range chessboard {
+			// 	fmt.Println("         ", chessboard[c])
+			// }
+			// fmt.Println()
 		}
 	}
 }
 
 func onTrigger() {
 
-	for row, cb := range chessboard {
-		for col := range cb {
-			p := point{row, col}
-			ScanPos(&p)
-		}
-	}
+	ScanPos()
 
-	initChessboard(chessboard)
-
+	fmt.Println()
 	for c := range chessboard {
-		fmt.Println(chessboard[c])
+		fmt.Println("         ", chessboard[c])
 	}
+	fmt.Println()
 
 }
 
 // ScanPos is 扫描棋盘
-func ScanPos(p *point) bool {
-	var bol bool
-	if p.X < len(chessboard)-2 {
-		a, b, c := chessboard[p.X+1][p.Y], chessboard[p.X+2][p.Y], chessboard[p.X][p.Y]
-		if a == b && b == c {
-			bol = true
-			fmt.Println("X消除 ------")
-			chessboard[p.X+1][p.Y], chessboard[p.X+2][p.Y], chessboard[p.X][p.Y] = "X", "X", "X"
+func ScanPos() bool {
+	bol := true
+
+	for bol {
+		bol = false
+		for row, cb := range chessboard {
+			for col := range cb {
+				p := point{row, col}
+				if p.X < len(chessboard)-2 {
+					a, b, c := chessboard[p.X+1][p.Y], chessboard[p.X+2][p.Y], chessboard[p.X][p.Y]
+					if a == b && b == c {
+						bol = true
+						score += 100
+						fmt.Println("消除", a, b, c, "积分+100;Score:", score)
+						chessboard[p.X+1][p.Y], chessboard[p.X+2][p.Y], chessboard[p.X][p.Y] = "X", "X", "X"
+					}
+				}
+
+				if p.Y < len(chessboard[0])-2 {
+					a, b, c := chessboard[p.X][p.Y+1], chessboard[p.X][p.Y+2], chessboard[p.X][p.Y]
+					if a == b && b == c {
+						bol = true
+						score += 100
+						fmt.Println("消除", a, b, c, "积分+100;Score:", score)
+						chessboard[p.X][p.Y+1], chessboard[p.X][p.Y+2], chessboard[p.X][p.Y] = "X", "X", "X"
+					}
+				}
+			}
 		}
+		initChessboard(chessboard)
 	}
 
-	if p.Y < len(chessboard[0])-2 {
-		a, b, c := chessboard[p.X][p.Y+1], chessboard[p.X][p.Y+2], chessboard[p.X][p.Y]
-		if a == b && b == c {
-			bol = true
-			fmt.Println("Y消除 ------")
-			chessboard[p.X][p.Y+1], chessboard[p.X][p.Y+2], chessboard[p.X][p.Y] = "X", "X", "X"
-		}
-	}
 	return bol
 }
 
@@ -109,7 +135,7 @@ func initChessboard(chessboard [][]string) {
 		for index, c := range chess {
 			if c == "X" {
 				//rand.Seed(time.Now().UnixNano())
-				i := rand.Intn(4)
+				i := rand.Intn(5)
 				// i, _ := rand.Int(rand.Reader, big.NewInt(100))
 				// fmt.Println("i", i)
 				// var ii int
