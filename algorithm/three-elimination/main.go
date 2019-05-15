@@ -20,10 +20,10 @@ var score int
 
 func init() {
 	chessboard = [][]string{
-		{"X", "X", "X", "X", "X", "X", "X", "X"},
-		{"X", "X", "X", "X", "X", "X", "X", "X"},
-		{"X", "X", "X", "X", "X", "X", "X", "X"},
-		{"X", "X", "X", "X", "X", "X", "X", "X"},
+		{"Q", "Q", "Q", "Q", "X", "X", "X", "X"},
+		{"Q", "X", "X", "X", "X", "X", "X", "X"},
+		{"Q", "X", "X", "X", "X", "X", "X", "X"},
+		{"Q", "X", "X", "X", "X", "X", "X", "X"},
 		{"X", "X", "X", "X", "X", "X", "X", "X"},
 		{"X", "X", "X", "X", "X", "X", "X", "X"},
 		{"X", "X", "X", "X", "X", "X", "X", "X"},
@@ -109,7 +109,16 @@ func ScanPos() bool {
 						bol = true
 						score += 100
 						fmt.Println("消除", a, b, c, "积分+100;Score:", score)
+
 						chessboard[p.X+1][p.Y], chessboard[p.X+2][p.Y], chessboard[p.X][p.Y] = "X", "X", "X"
+
+						for i := p.X + 2; i < len(chessboard); i++ {
+							if chessboard[i][p.Y] == a {
+								fmt.Println("消除", chessboard[i][p.Y], i, p.Y)
+								chessboard[i][p.Y] = "X"
+							}
+						}
+
 					}
 				}
 
@@ -120,8 +129,21 @@ func ScanPos() bool {
 						score += 100
 						fmt.Println("消除", a, b, c, "积分+100;Score:", score)
 						chessboard[p.X][p.Y+1], chessboard[p.X][p.Y+2], chessboard[p.X][p.Y] = "X", "X", "X"
+
+						for i := p.Y + 2; i < len(chessboard[0]); i++ {
+							if chessboard[p.X][i] == a {
+								fmt.Println("消除", chessboard[p.X][i], p.X, i)
+								chessboard[p.X][i] = "X"
+							}
+						}
+
 					}
 				}
+
+				// for c := range chessboard {
+				// 	fmt.Println("         ", chessboard[c])
+				// }
+				// fmt.Println()
 			}
 		}
 		initChessboard(chessboard)
