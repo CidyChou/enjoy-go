@@ -6,12 +6,17 @@ import (
 	"time"
 )
 
-func main() {
-	fmt.Println(twoSum([]int{3, 2, 4}, 6))
-	fmt.Println(uniqueMorseRepresentations([]string{"gin", "zen", "gig", "msg"}))
+type ListNode struct {
+	Val  int
+	Next *ListNode
+}
 
-	fmt.Println("checkPossibility", checkPossibility([]int{2, 3, 3, 2, 4}))
-	fmt.Println("climbStairs", climbStairs(3))
+func main() {
+	//fmt.Println(twoSum([]int{3, 2, 4}, 6))
+	//fmt.Println(uniqueMorseRepresentations([]string{"gin", "zen", "gig", "msg"}))
+
+	//fmt.Println("checkPossibility", checkPossibility([]int{2, 3, 3, 2, 4}))
+	//fmt.Println("climbStairs", climbStairs(3))
 	// chapter1()
 	// chapter2()
 	// chapter3()
@@ -20,6 +25,41 @@ func main() {
 	// chapter6()
 	// chapter7()
 	// chapter8()
+
+	fmt.Println(threeSum([]int{-1, 0, 1, 2}))
+}
+
+// func threeSum(nums []int) [][]int {
+// 	var res = make([][]int, 10000)
+// 	index := 0
+// 	for i := 0; i < len(nums); i++ {
+// 		if i < len(nums)-2 {
+// 			if nums[i]+nums[i+1]+nums[i+2] == 0 {
+// 				res[index] = []int{nums[i], nums[i+1], nums[i+2]}
+// 				index++
+// 			}
+// 		}
+// 	}
+// 	return res
+// }
+
+func threeSum(nums []int) [][]int {
+	var res = make([][]int, 10)
+	index := 0
+	for i := 0; i <= len(nums); i++ {
+		for j := i + 1; j <= len(nums)-i; j++ {
+			for h := j + 1; h <= len(nums)-j; h++ {
+				fmt.Println(i, j, h)
+			}
+		}
+		if i < len(nums)-2 {
+			if nums[i]+nums[i+1]+nums[i+2] == 0 {
+				res[index] = []int{nums[i], nums[i+1], nums[i+2]}
+				index++
+			}
+		}
+	}
+	return res
 }
 
 func climbStairs(n int) int {
