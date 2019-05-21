@@ -12,6 +12,10 @@ type ListNode struct {
 }
 
 func main() {
+
+	reverseSeed := []uint8{1, 1, 1, 1, 1, 12, 1, 1, 2, 1}
+	fmt.Println(reverseSeed[8])
+
 	//fmt.Println(twoSum([]int{3, 2, 4}, 6))
 	//fmt.Println(uniqueMorseRepresentations([]string{"gin", "zen", "gig", "msg"}))
 
@@ -26,7 +30,7 @@ func main() {
 	// chapter7()
 	// chapter8()
 
-	fmt.Println(threeSum([]int{-1, 0, 1, 2}))
+	//fmt.Println(threeSum([]int{-1, 0, 1, 2}))
 }
 
 // func threeSum(nums []int) [][]int {

@@ -4,7 +4,7 @@
  * [15] 三数之和
  */
 func threeSum(nums []int) [][]int {
-	var res = make([][]int, 10000)
+	var res = make([][]int, 0)
 	index := 0
 	for i := 0; i < len(nums); i++ {
 		if i < len(nums)-2 {
