@@ -2,8 +2,11 @@ package main
 
 import (
 	"fmt"
+	"math"
 	"math/rand"
 	"time"
+
+	underscore "github.com/ahl5esoft/golang-underscore"
 )
 
 type ListNode struct {
@@ -13,8 +16,17 @@ type ListNode struct {
 
 func main() {
 
-	reverseSeed := []uint8{1, 1, 1, 1, 1, 12, 1, 1, 2, 1}
-	fmt.Println(reverseSeed[8])
+	// reverseSeed := []uint8{1, 1, 1, 1, 1, 12, 1, 1, 2, 1}
+	//fmt.Println(reverseSeed[8])
+
+	// ms := make(map[string]string)
+
+	// ms["s"] = "s"
+
+	// m, b := ms["ss"]
+
+	// fmt.Println(m)
+	// fmt.Println(b)
 
 	//fmt.Println(twoSum([]int{3, 2, 4}, 6))
 	//fmt.Println(uniqueMorseRepresentations([]string{"gin", "zen", "gig", "msg"}))
@@ -31,6 +43,43 @@ func main() {
 	// chapter8()
 
 	//fmt.Println(threeSum([]int{-1, 0, 1, 2}))
+	//fmt.Println(reverse(987654321))
+
+	test()
+}
+
+type testModel struct {
+	ID   int
+	Name string
+}
+
+func test() {
+	ok := underscore.Chain([]testModel{
+		{ID: 1, Name: "one"},
+		{ID: 2, Name: "two"},
+		{ID: 1, Name: "three"},
+	}).Any(func(r testModel, _ int) bool {
+		return r.ID == 1
+	})
+
+	fmt.Println(ok)
+}
+
+func reverse(x int) int {
+
+	var i int
+	fmt.Println(math.Pow(2, 31) - 1)
+
+	if x > int(math.Pow(2, 31)-1) || x < -int((math.Pow(2, 31))) {
+		return 0
+	}
+
+	for x != 0 {
+		i = i*10 + x%10
+		x = x / 10
+	}
+
+	return i
 }
 
 // func threeSum(nums []int) [][]int {
