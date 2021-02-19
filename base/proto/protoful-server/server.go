@@ -1,7 +1,6 @@
 package main
 
 import (
-	stProto "cidychou/enjoy-go/proto"
 	"fmt"
 	"net"
 	"os"

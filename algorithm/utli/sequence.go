@@ -1,4 +1,4 @@
-package utlis
+package util
 
 func Fibonacci(n int) int {
 

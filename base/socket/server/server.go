@@ -1,35 +1,77 @@
+// Simple multi-thread/multi-core TCP server.
 package main
 
 import (
-	"io"
-	"log"
+	"flag"
+	"fmt"
 	"net"
-	"time"
+	"syscall"
 )
 
+const maxRead = 25
+
 func main() {
-	listener, err := net.Listen("tcp", "localhost:8888")
-	if err != nil {
-		log.Fatal(err)
+	flag.Parse()
+	if flag.NArg() != 2 {
+		panic("usage: host port")
 	}
+	hostAndPort := fmt.Sprintf("%s:%s", flag.Arg(0), flag.Arg(1))
+	listener := initServer(hostAndPort)
 	for {
 		conn, err := listener.Accept()
-		if err != nil {
-			log.Print(err)
-			continue
-		}
-		handleConn(conn)
+		checkError(err, "Accept: ")
+		go connectionHandler(conn)
 	}
 }
-
-func handleConn(conn net.Conn) {
-	defer conn.Close()
+func initServer(hostAndPort string) net.Listener {
+	serverAddr, err := net.ResolveTCPAddr("tcp", hostAndPort)
+	checkError(err, "Resolving address:port failed: '"+hostAndPort+"'")
+	listener, err := net.ListenTCP("tcp", serverAddr)
+	checkError(err, "ListenTCP: ")
+	println("Listening to: ", listener.Addr().String())
+	return listener
+}
+func connectionHandler(conn net.Conn) {
+	connFrom := conn.RemoteAddr().String()
+	println("Connection from: ", connFrom)
+	sayHello(conn)
 	for {
-		_, err := io.WriteString(conn, time.Now().Format("15:04:05\n"))
-		if err != nil {
-			return
+		var ibuf []byte = make([]byte, maxRead+1)
+		length, err := conn.Read(ibuf[0:maxRead])
+		ibuf[maxRead] = 0 // to prevent overflow
+		switch err {
+		case nil:
+			handleMsg(length, err, ibuf)
+		case syscall.EAGAIN: // try again
+			continue
+		default:
+			goto DISCONNECT
 		}
-
-		time.Sleep(1 * time.Second)
+	}
+DISCONNECT:
+	err := conn.Close()
+	println("Closed connection: ", connFrom)
+	checkError(err, "Close: ")
+}
+func sayHello(to net.Conn) {
+	obuf := []byte{'L', 'e', 't', '\'', 's', ' ', 'G', 'O', '!', '\n'}
+	wrote, err := to.Write(obuf)
+	checkError(err, "Write: wrote "+string(wrote)+" bytes.")
+}
+func handleMsg(length int, err error, msg []byte) {
+	if length > 0 {
+		print("<", length, ":")
+		for i := 0; ; i++ {
+			if msg[i] == 0 {
+				break
+			}
+			fmt.Printf("%c", msg[i])
+		}
+		print(">")
+	}
+}
+func checkError(error error, info string) {
+	if error != nil {
+		panic("ERROR: " + info + " " + error.Error()) // terminate program
 	}
 }

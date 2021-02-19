@@ -1,6 +1,6 @@
 package user
 
-import "cidychou/enjoy-go/gotest/person"
+import "enjoy-go/gotest/person"
 
 type User struct {
 	Person person.Male

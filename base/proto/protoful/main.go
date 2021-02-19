@@ -2,7 +2,6 @@ package main
 
 import (
 	"bufio"
-	stProto "cidychou/enjoy-go/proto"
 	"fmt"
 	"net"
 	"os"

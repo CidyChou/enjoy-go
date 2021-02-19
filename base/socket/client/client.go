@@ -1,26 +1,8 @@
-package main
+// handler/ws/echo_display.go
+package ws
 
-import (
-	"io"
-	"log"
-	"net"
-	"os"
-)
+import "net/http"
 
-func main() {
-	conn, err := net.Dial("tcp", "localhost:8888")
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	defer conn.Close()
-	mustCopy(os.Stdout, conn)
-
-}
-
-func mustCopy(dst io.Writer, src io.Reader) {
-	if _, err := io.Copy(dst, src); err != nil {
-		log.Fatal(err)
-	}
-
+func DisplayEcho(w http.ResponseWriter, r *http.Request) {
+	http.ServeFile(w, r, "views/websockets.html")
 }

@@ -3,7 +3,7 @@ package user
 import (
 	"testing"
 
-	"cidychou/enjoy-go/gotest/mock"
+	"enjoy-go/gotest/mock"
 
 	"github.com/golang/mock/gomock"
 )

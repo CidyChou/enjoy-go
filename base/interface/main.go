@@ -9,7 +9,7 @@ type people struct {
 }
 
 func main() {
-	
+
 }
 
 func (p *people) Get() int {

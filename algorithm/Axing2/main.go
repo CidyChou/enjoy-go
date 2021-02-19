@@ -1,7 +1,7 @@
 package main
 
 import (
-	"cidychou/enjoy-go/algorithm/Axing2/astar"
+	"enjoy-go/algorithm/Axing2/astar"
 
 	"fmt"
 )
